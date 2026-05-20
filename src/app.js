@@ -2,6 +2,7 @@
 const express = require('express');
 const { sequelize } = require('./model/database.js');
 const ExpenseView = require('./view/expense.js');
+require('./model/associations.js'); // Importa as associações entre os modelos
 
 // INICIALIZAÇÃO
 const app = express();

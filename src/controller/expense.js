@@ -5,7 +5,7 @@ class Expense {
     }
 
     // CREATE
-    async create(title, amount, category, date, description) {
+    async create(title, amount, categoryId, date, description) {
         // Validação dos dados
         // Se o campo title foi preenchido
         if (!title) {
@@ -33,7 +33,7 @@ class Expense {
             }
         }
         
-        return await ExpenseModel.create(title, amount, category, date, description);
+        return await ExpenseModel.create(title, amount, categoryId, date, description);
     }
 
     // READ (Listar)
