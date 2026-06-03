@@ -4,6 +4,8 @@ const { sequelize } = require('./database');
 // Importa a função de DataTypes do Sequelize
 const { DataTypes } = require('sequelize');
 
+const CategoryModel = require("./category.js");
+
 // Modelo de Despesa
 const Expense = sequelize.define('expense', {
     id: {
@@ -58,10 +60,19 @@ async function getTotal() {
 async function getByCategory() {
     const totalPorCategoria = await Expense.findAll({
         attributes: [
-            'category',
-            [sequelize.fn('SUM', sequelize.col('amount')), 'total']
+            [sequelize.fn('SUM', sequelize.col('amount')), 'total'],
+
+            [sequelize.col('category.name'), 'categoryName']
         ],
-        group: ['category'],
+        include: [
+            {
+                model: CategoryModel.Category,
+                as: 'category',
+                attributes: []
+            }
+        ],
+            
+        group: ['categoryId', 'category.id'],
         raw: true
     });
 
@@ -107,6 +118,8 @@ module.exports = {
     Expense,
     create,
     getAll,
+    getTotal,
+    getByCategory,
     getById,
     update,
     remove
