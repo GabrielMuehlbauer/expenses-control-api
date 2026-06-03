@@ -1,4 +1,5 @@
 const ExpenseModel = require("../model/expense.js");
+const CategoryModel = require("../model/category.js");
 
 class Expense {
     constructor() {
@@ -10,6 +11,22 @@ class Expense {
         // Se o campo title foi preenchido
         if (!title) {
             const erro = new Error("O título da despesa é obrigatório.");
+            erro.statusCode = 400;
+            throw erro;
+        }
+
+        // Se a categoria foi informada
+        if (!categoryId) {
+            const erro = new Error("É necessário informar a categoria da despesa.");
+            erro.statusCode = 400;
+            throw erro;
+        }
+
+        // Se a categoria existe
+        const categoriaEncontrada = await CategoryModel.getById(categoryId);
+
+        if (!categoriaEncontrada) {
+            const erro = new Error("A categoria informada não existe.");
             erro.statusCode = 400;
             throw erro;
         }
@@ -76,6 +93,15 @@ class Expense {
                 erro.statusCode = 400;
                 throw erro;
             }
+        }
+
+        // Se a categoria existe
+        const categoriaEncontrada = await CategoryModel.getById(dadosNovos.categoryId);
+
+        if (!categoriaEncontrada) {
+            const erro = new Error("A categoria informada não existe.");
+            erro.statusCode = 400;
+            throw erro;
         }
 
         return await ExpenseModel.update(id, dadosNovos);

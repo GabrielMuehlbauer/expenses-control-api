@@ -2,6 +2,7 @@
 const express = require('express');
 const { sequelize } = require('./model/database.js');
 const ExpenseView = require('./view/expense.js');
+const CategoryView = require('./view/category.js');
 require('./model/associations.js'); // Importa as associações entre os modelos
 
 // INICIALIZAÇÃO
@@ -27,6 +28,7 @@ app.get('/', (req, res) => {
     });
 });
 
+/* ROTAS PARA DESPESAS */
 // Rota CREATE
 app.post('/api/expenses', ExpenseView.create);
 
@@ -47,6 +49,22 @@ app.put('/api/expenses/:id', ExpenseView.update);
 
 // Rota DELETE
 app.delete('/api/expenses/:id', ExpenseView.remove);
+
+/* ROTAS PARA CATEGORIAS */
+// Rota CREATE
+app.post('/api/categories', CategoryView.create);
+
+// Rota READ (Listar)
+app.get('/api/categories', CategoryView.getAll);
+
+// Rota READ (Obter por ID)
+app.get('/api/categories/:id', CategoryView.getById);
+
+// Rota UPDATE
+app.put('/api/categories/:id', CategoryView.update);
+
+// Rota DELETE
+app.delete('/api/categories/:id', CategoryView.remove);
 
 async function main() {
     try {
