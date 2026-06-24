@@ -8,11 +8,11 @@ class Expense {
     async create(req, res) {
         try {
             // Extrai os dados do body
-            const { title, amount, categoryId, date, description } = req.body;
+            const { title, amount, categoryId, date, description, status } = req.body;
 
             const userId = req.user.id;
 
-            const novaDespesa = (await ExpenseController.create(title, amount, categoryId, date, description, userId)).toJSON();
+            const novaDespesa = (await ExpenseController.create(title, amount, categoryId, date, description, userId, status)).toJSON();
 
             novaDespesa._links = [
                 {

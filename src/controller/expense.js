@@ -6,7 +6,7 @@ class Expense {
     }
 
     // CREATE
-    async create(title, amount, categoryId, date, description, userId) {
+    async create(title, amount, categoryId, date, description, userId, status) {
         // Validação dos dados
         // Se o campo title foi preenchido
         if (!title) {
@@ -49,8 +49,15 @@ class Expense {
                 throw erro;
             }
         }
-        
-        return await ExpenseModel.create(title, amount, categoryId, date, description, userId);
+
+        // Bloqueia se enviarem um status inventado
+        if (status && status !== 'PENDENTE' && status !== 'PAGA') {
+            const erro = new Error("O status deve ser apenas 'PENDENTE' ou 'PAGA'.");
+            erro.statusCode = 400;
+            throw erro;
+        }
+
+        return await ExpenseModel.create(title, amount, categoryId, date, description, userId, status);
     }
 
     // READ (Listar)
@@ -87,7 +94,7 @@ class Expense {
         if (dadosNovos.date) {
             const dataDespesa = new Date(dadosNovos.date);
             const dataAtual = new Date();
-            
+
             if (dataDespesa > dataAtual) {
                 const erro = new Error("A data da despesa não pode ser no futuro.");
                 erro.statusCode = 400;
@@ -103,6 +110,14 @@ class Expense {
             erro.statusCode = 400;
             throw erro;
         }
+
+        // Bloqueia se enviarem um status inventado
+        if (status && status !== 'PENDENTE' && status !== 'PAGA') {
+            const erro = new Error("O status deve ser apenas 'PENDENTE' ou 'PAGA'.");
+            erro.statusCode = 400;
+            throw erro;
+        }
+
 
         return await ExpenseModel.update(id, dadosNovos, userId);
     }

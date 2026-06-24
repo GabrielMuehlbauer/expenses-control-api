@@ -38,12 +38,17 @@ const Expense = sequelize.define('expense', {
     description: {
         type: DataTypes.STRING,
         allowNull: true,
+    },
+    status: {
+        type: DataTypes.ENUM('PEDENTE', 'PAGA'),
+        allowNull: false,
+        defaultValue: 'PEDENTE'
     }
 });
 
 // CREATE
-async function create(title, amount, categoryId, date, description, userId) {
-    return await Expense.create({ title, amount, categoryId, date, description, userId });
+async function create(title, amount, categoryId, date, description, userId, status) {
+    return await Expense.create({ title, amount, categoryId, date, description, userId, status });
 }
 
 // READ (Listar)
@@ -103,6 +108,7 @@ async function update(id, dadosNovos, userId) {
     despesaAtualizada.categoryId = dadosNovos.categoryId || despesaAtualizada.categoryId;
     despesaAtualizada.date = dadosNovos.date || despesaAtualizada.date;
     despesaAtualizada.description = dadosNovos.description || despesaAtualizada.description;
+    despesaAtualizada.status = dadosNovos.status || despesaAtualizada.status;
 
     await despesaAtualizada.save();
     return despesaAtualizada;
