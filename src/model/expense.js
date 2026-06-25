@@ -43,9 +43,9 @@ const Expense = sequelize.define('expense', {
         allowNull: true,
     },
     status: {
-        type: DataTypes.ENUM('PEDENTE', 'PAGA'),
+        type: DataTypes.ENUM('PENDENTE', 'PAGA'),
         allowNull: false,
-        defaultValue: 'PEDENTE'
+        defaultValue: 'PENDENTE'
     }
 });
 
