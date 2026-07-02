@@ -8,7 +8,7 @@ const router = express.Router();
 router.post('/', CategoryView.create);
 
 // Rota READ (Listar)
-router.get('/api/categories', CategoryView.getAll);
+router.get('/', CategoryView.getAll);
 
 // Rota READ (Obter por ID)
 router.get('/:id', CategoryView.getById);

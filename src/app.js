@@ -1,5 +1,6 @@
 // IMPORTAÇÕES
 const express = require('express');
+const cors = require('cors');
 const { sequelize } = require('./models/database.js');
 const authMiddleware = require('./middleware/auth.js');
 require('./models/associations.js'); // Importa as associações entre os modelos
@@ -14,6 +15,7 @@ const categoryRoutes = require('./routes/categoryRoutes.js');
 const app = express();
 const PORT = 3000;
 const { version } = require('../package.json');
+app.use(cors()); // Habilita o CORS para permitir requisições de diferentes origens
 
 
 // MIDDLEWARES (Configurações)
