@@ -14,7 +14,11 @@ const Category = sequelize.define('category', {
     name: {
         type: DataTypes.STRING,
         allowNull: false,
-        unique: true,
+        // A unicidade do nome da categoria deve ser por usuário.
+        // Dois usuários diferentes podem ter uma categoria com o mesmo nome.
+        // Usamos um nome para o índice composto para que o Sequelize saiba
+        // que a combinação de 'name' e 'userId' deve ser única.
+        unique: 'user_category_name',
     },
     description: {
         type: DataTypes.STRING,
@@ -23,6 +27,7 @@ const Category = sequelize.define('category', {
     userId: {
         type: DataTypes.UUID,
         allowNull: false,
+        unique: 'user_category_name',
         references: {
             model: 'users',
             key: 'id'
@@ -49,19 +54,24 @@ async function getById(id, userId) {
 
 // UPDATE
 async function update(id, name, description, userId) {
-    const category = await Category.getById(id, userId);
+    const category = await getById(id, userId);
     if (!category) {
         const erro = new Error("Categoria não encontrada.");
         erro.statusCode = 404;
         throw erro;
     }
-    category.name = name;
+    category.name = name || category.name;
+    // Atualiza a descrição apenas se ela for explicitamente enviada na requisição.
+    // Isso permite definir a descrição como uma string vazia (""), o que a lógica `||` impediria.
+    if (description !== undefined) {
+        category.description = description;
+    }
     return await category.save();
 }
 
 // DELETE
 async function remove(id, userId) {
-    const category = await Category.getById(id, userId);
+    const category = await getById(id, userId);
     if (!category) {
         const erro = new Error("Categoria não encontrada.");
         erro.statusCode = 404;
