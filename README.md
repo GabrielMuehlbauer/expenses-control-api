@@ -20,6 +20,41 @@ O projeto foi construído seguindo rigorosamente o **Padrão Arquitetural MVC** 
 
 ---
 
+## Endpoints da API
+
+A API está estruturada em rotas públicas e rotas privadas que exigem autenticação via token JWT.
+
+### Rota Principal `(Pública)`
+- `GET /`: Retorna informações básicas sobre o projeto.
+
+### Autenticação e Usuários `(Públicas)`
+- `POST /api/users`: Cadastra um novo usuário.
+- `POST /api/auth/login`: Autentica um usuário e retorna um token JWT.
+
+### Categorias `(Privada)`
+*Requer token de autenticação.*
+- `POST /api/categories`: Cria uma nova categoria.
+- `GET /api/categories`: Lista todas as categorias do usuário.
+- `GET /api/categories/:id`: Busca uma categoria específica.
+- `PUT /api/categories/:id`: Atualiza uma categoria.
+- `DELETE /api/categories/:id`: Exclui uma categoria.
+
+### Despesas `(Privada)`
+*Requer token de autenticação.*
+- `POST /api/expenses`: Adiciona uma nova despesa.
+- `GET /api/expenses`: Lista todas as despesas do usuário, com suporte a filtros (`status`, `categoryId`, `minAmount`, `maxAmount`, `startDate`, `endDate`).
+- `GET /api/expenses/:id`: Busca uma despesa específica.
+- `PUT /api/expenses/:id`: Atualiza uma despesa.
+- `DELETE /api/expenses/:id`: Exclui uma despesa.
+
+### Dashboard `(Privada)`
+*Requer token de autenticação.*
+- `GET /api/dashboard/total-expenses`: Retorna a soma total das despesas.
+- `GET /api/dashboard/expenses-count`: Retorna a quantidade total de despesas.
+- `GET /api/dashboard/expenses-by-category`: Retorna o valor total das despesas agrupado por categoria.
+
+---
+
 ## ⚙️ Instruções para Rodar o Projeto
 
 ### Pré-requisitos
